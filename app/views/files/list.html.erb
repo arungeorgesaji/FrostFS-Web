@@ -1,0 +1,92 @@
+<div class="container">
+  <h1>All Files</h1>
+  
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Upload New File</h5>
+      <%= form_with url: files_upload_path, multipart: true do |form| %>
+        <div class="row">
+          <div class="col-md-8">
+            <%= form.file_field :file, class: 'form-control', accept: '*/*' %>
+          </div>
+          <div class="col-md-4">
+            <%= form.submit 'Upload File', class: 'btn btn-primary' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <% if @error %>
+    <div class="alert alert-danger"><%= @error %></div>
+  <% else %>
+    <div class="card">
+      <div class="card-body">
+        <% if @files.empty? %>
+          <div class="text-center py-4">
+            <h5>No files found</h5>
+            <p class="text-muted">Upload a file using the form above to get started.</p>
+          </div>
+        <% else %>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>File</th>
+                  <th>State</th>
+                  <th>Size</th>
+                  <th>Fragmentation</th>
+                  <th>Last Accessed</th>
+                  <th>Access Count</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @files.each do |file| %>
+                  <tr>
+                    <td>
+                      <strong><%= file[:name] %></strong>
+                      <br>
+                      <small class="text-muted"><%= file[:path] %></small>
+                      <% unless file[:exists] %>
+                        <br>
+                        <small class="text-warning">⚠️ No FrostFS metadata</small>
+                      <% end %>
+                    </td>
+                    <td>
+                      <span class="badge bg-<%= state_color(file[:state]) %>">
+                        <%= state_icon(file[:state]) %> <%= file[:state].to_s.humanize %>
+                      </span>
+                    </td>
+                    <td><%= number_to_human_size(file[:size]) %></td>
+                    <td>
+                      <div class="progress" style="width: 100px;">
+                        <div class="progress-bar <%= fragmentation_color(file[:fragmentation]) %>" 
+                             style="width: <%= file[:fragmentation] %>%;">
+                          <%= file[:fragmentation] %>%
+                        </div>
+                      </div>
+                    </td>
+                    <td><%= time_ago_in_words(file[:last_accessed]) %> ago</td>
+                    <td><%= file[:access_count] %></td>
+                    <td>
+                      <% if file[:state] == :deep_frozen %>
+                        <%= button_to "Thaw", thaw_file_path(path: file[:path]), 
+                                      method: :post, class: "btn btn-sm btn-success" %>
+                      <% else %>
+                        <%= button_to "Freeze", freeze_file_path(path: file[:path]), 
+                                      method: :post, class: "btn btn-sm btn-warning" %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  
+  <%= link_to 'Back to Files', files_path, class: 'btn btn-secondary mt-3' %>
+</div>

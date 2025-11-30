@@ -1,0 +1,50 @@
+<div class="container">
+<h1>Thermal Map</h1>
+<p class="text-muted">Visual representation of file activity - hotter files are accessed more recently</p>
+
+<% if @error %>
+  <div class="alert alert-danger"><%= @error %></div>
+<% else %>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <% @sorted_files.each do |file_path, data| %>
+          <div class="col-md-6 mb-3">
+            <div class="card">
+              <div class="card-body">
+                <h6 class="card-title">
+                  <%= state_icon(data[:state]) %> 
+                  <%= File.basename(file_path) %>
+                </h6>
+                <small class="text-muted"><%= file_path %></small>
+                
+                <div class="mt-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span>Heat:</span>
+                    <span class="fw-bold <%= heat_color(data[:score]) %>">
+                      <%= data[:score] %>/100
+                    </span>
+                  </div>
+                  <div class="progress mt-1">
+                    <div class="progress-bar <%= heat_color(data[:score]) %>" 
+                         style="width: <%= data[:score] %>%;">
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="mt-2 small text-muted">
+                  State: <%= data[:state] %> | 
+                  Accesses: <%= data[:accesses] %> |
+                  Days inactive: <%= data[:days_since_access] %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= link_to 'Back to Files', files_path, class: 'btn btn-secondary mt-3' %>
+</div>

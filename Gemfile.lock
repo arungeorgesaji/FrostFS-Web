@@ -1,3 +1,9 @@
+PATH
+  remote: ../FrostFS
+  specs:
+    frostfs (0.1.0)
+      logging (~> 2.3)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -91,6 +97,7 @@ GEM
     concurrent-ruby (1.3.5)
     connection_pool (2.5.5)
     crass (1.0.6)
+    curses (1.5.3)
     date (3.5.0)
     debug (1.11.0)
       irb (~> 1.10)
@@ -140,7 +147,11 @@ GEM
       zeitwerk (>= 2.6.18, < 3.0)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
+    little-plugger (1.1.4)
     logger (1.7.0)
+    logging (2.4.0)
+      little-plugger (~> 1.1)
+      multi_json (~> 1.14)
     loofah (2.24.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -156,6 +167,7 @@ GEM
     mini_mime (1.1.5)
     minitest (5.26.2)
     msgpack (1.8.0)
+    multi_json (1.17.0)
     net-imap (0.5.12)
       date
       net-protocol
@@ -350,7 +362,9 @@ DEPENDENCIES
   bootsnap
   brakeman
   bundler-audit
+  curses
   debug
+  frostfs!
   image_processing (~> 1.2)
   jbuilder
   kamal

@@ -1,0 +1,55 @@
+<div class="container">
+  <h1>System Maintenance</h1>
+  
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Seasonal Maintenance</h5>
+          <p class="card-text">
+            Run comprehensive system maintenance including seasonal thawing, 
+            defragmentation, and glacier archiving.
+          </p>
+          
+          <% if flash[:success] %>
+            <div class="alert alert-success">
+              <h6>Maintenance Results:</h6>
+              <% if @result %>
+                <ul>
+                  <li>Season: <strong><%= @result[:season].to_s.humanize %></strong></li>
+                  <li>Files thawed: <strong><%= @result[:thawed] %></strong></li>
+                  <li>Files defragmented: <strong><%= @result[:defragmented] %></strong></li>
+                  <li>Files archived: <strong><%= @result[:archived] %></strong></li>
+                </ul>
+              <% end %>
+            </div>
+          <% end %>
+          
+          <% if flash[:error] %>
+            <div class="alert alert-danger"><%= flash[:error] %></div>
+          <% end %>
+          
+          <%= button_to "Run Maintenance Now", run_maintenance_path, 
+                        method: :post, 
+                        class: "btn btn-primary btn-lg",
+                        data: { confirm: "Run seasonal maintenance? This may take a while." } %>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Current Season</h5>
+          <p class="display-6 text-center">
+            <% season = @fs&.current_season || :unknown %>
+            <%= season_icon(season) %>
+          </p>
+          <p class="text-center"><strong><%= season.to_s.humanize %></strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <%= link_to 'Back to Files', files_path, class: 'btn btn-secondary mt-3' %>
+</div>

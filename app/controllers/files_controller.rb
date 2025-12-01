@@ -84,8 +84,6 @@ class FilesController < ApplicationController
         rescue => e
           flash[:error] = "Upload error: #{e.message}"
         end
-      else
-        flash[:error] = "Please select a file to upload"
       end
       
       redirect_to files_list_path

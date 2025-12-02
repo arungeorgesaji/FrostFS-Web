@@ -71,15 +71,11 @@
                     <td><%= file[:access_count] %></td>
                     <td>
                       <% if file[:state] == :deep_frozen %>
-                        <%= button_to "thaw", thaw_file_path(file[:path]), 
-                                      method: :post, 
-                                      class: "btn btn-sm btn-success",
-                                      data: { confirm: "thaw #{file[:name]}?" } %>
+                        <%= button_to "Thaw", thaw_file_path(path: file[:path]), 
+                                      method: :post, class: "btn btn-sm btn-success" %>
                       <% else %>
-                        <%= button_to "freeze", freeze_file_path(file[:path]), 
-                                      method: :post,
-                                      class: "btn btn-sm btn-warning", 
-                                      data: { confirm: "freeze #{file[:name]}?" } %>
+                        <%= button_to "Freeze", freeze_file_path(path: file[:path]), 
+                                      method: :post, class: "btn btn-sm btn-warning" %>
                       <% end %>
                     </td>
                   </tr>
